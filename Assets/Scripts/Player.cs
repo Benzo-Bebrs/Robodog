@@ -6,22 +6,24 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public static Player Instance { get; private set; }
+    public static Player Instance { get; private set; } // singleton
+
+    public float cos;
+    public float sin;
 
     private Rigidbody2D rb;
-    private float maxMoveSpeed = 7.5f;
-    private float jumpForce = 5;
-    private float reboundForce = 6.5f;
-    private float moveDirection;
-    private float rotateDirection;
-    private float rotateSpeed = 180;
-    private bool canRotation;
+    private float maxMoveSpeed = 7.5f; // максимальная скорость движения по горизонтали
+    private float jumpForce = 5f; // сила прыжка 
+    private float reboundForce = 7.5f; //сила прыжка от стены
+    public float moveDirection; // направление движения (W/D и стрелки)
+    private float rotateSpeed = 180; // скорость вращения 
 
     [Header("Grounded")]
-    [SerializeField]private Transform groundCheckPoint, centerCheckPoint;
+    [SerializeField] private Transform groundCheckPoint;
     [SerializeField] private Vector2 checkRadius;
     [SerializeField] private LayerMask whatIsGround;
-    private bool isGrounded;
+    [SerializeField] private LayerMask whatIsWall;
+    public bool isGrounded;
 
     [Header("Jump")]
     [SerializeField] private float wallDistance = 0.52f;
@@ -48,12 +50,16 @@ public class Player : MonoBehaviour
 
         isWallSliding = (wallCheckHitRight || wallCheckHitLeft) && !isGrounded;
         timeAfterLastShoot += Time.fixedDeltaTime;
+        
+        rb.freezeRotation = isGrounded;
     }
 
     private void Update()
     {
-        wallCheckHitRight = Physics2D.Raycast(transform.position, new Vector2(wallDistance, 0), wallDistance, whatIsGround);
-        wallCheckHitLeft = Physics2D.Raycast(transform.position, new Vector2(-wallDistance, 0), wallDistance, whatIsGround);
+        cos = (float)Math.Cos(transform.rotation.eulerAngles.z * Math.PI / 180.0);
+        sin = (float)Math.Sin(transform.rotation.eulerAngles.z * Math.PI / 180.0);
+        wallCheckHitRight = Physics2D.Raycast(transform.position, new Vector2(wallDistance, 0), wallDistance, whatIsWall);
+        wallCheckHitLeft = Physics2D.Raycast(transform.position, new Vector2(-wallDistance, 0), wallDistance, whatIsWall);
         
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -66,10 +72,13 @@ public class Player : MonoBehaviour
         }
 
         moveDirection = Input.GetAxis("Horizontal");
-        rotateDirection = Input.GetAxis("Vertical");
-        if (moveDirection != 0 || rotateDirection != 0)
+        if (moveDirection != 0)
         {
             Move();
+        }
+        else
+        {
+            rb.angularVelocity = 0;
         }
     }
 
@@ -77,46 +86,47 @@ public class Player : MonoBehaviour
     {
         if (isGrounded)
         {
+            rb.angularVelocity = 0;
+            if (transform.rotation.eulerAngles.z != 0)
+            {
+                transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+            }
+            
             if (Math.Abs(rb.velocity.x) < maxMoveSpeed)
             {
                 rb.velocity += Vector2.right * moveDirection / 5.0f;
             }
 
-            if (moveDirection < 0 && transform.rotation.eulerAngles.y == 0)
+            if (moveDirection <= 0 && transform.rotation.eulerAngles.y != 180)
             {
-                transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
+                transform.rotation = Quaternion.Euler(0, 180, 0);
             }
-            else if (moveDirection >= 0 && transform.rotation.eulerAngles.y == 180)
+            else if (moveDirection > 0 && transform.rotation.eulerAngles.y != 0)
             {
-                transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
+                transform.rotation = Quaternion.Euler(0, 0, 0);
             }
         }
-        //else if(canRotation)
-        //{
-        //    if (rotateDirection > 0)
-        //    {
-        //        transform.Rotate(Vector3.forward * rotateSpeed * Time.deltaTime);
-        //    }
-        //    else if (rotateDirection < 0)
-        //    {
-        //        transform.Rotate(-Vector3.forward * rotateSpeed * Time.deltaTime);
-        //    }
-
-        //    if ((transform.rotation.eulerAngles.z % 360 > 0 && transform.rotation.eulerAngles.z % 360 < 90) || 
-        //        (transform.rotation.eulerAngles.z % 360 > 270))
-        //    {
-        //        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
-        //    }
-        //    else
-        //    {
-        //        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
-        //    }
-        //}
+        else
+        {
+            if (moveDirection > 0)
+            {
+                rb.angularVelocity = rotateSpeed;
+                //transform.Rotate(Vector3.forward * rotateSpeed * Time.deltaTime);
+            }
+            else if (moveDirection < 0)
+            {
+                rb.angularVelocity = -rotateSpeed;
+                //transform.Rotate(-Vector3.forward * rotateSpeed * Time.deltaTime);
+            }
+            else
+            {
+                rb.angularVelocity = 0;
+            }
+        }
     }
 
     private void TryToJump()
     {
-        canRotation = true;
         if (isGrounded)
         {
             rb.velocity += Vector2.up * jumpForce;
@@ -140,18 +150,12 @@ public class Player : MonoBehaviour
     {
         if (timeAfterLastShoot >= rechargeTime)
         {
+            cos = (float)Math.Cos(transform.rotation.eulerAngles.z * Math.PI / 180.0);
+            sin = (float)Math.Sin(transform.rotation.eulerAngles.z * Math.PI / 180.0);
             Instantiate(bulletPrefab, shootPlace.position, shootPlace.rotation);
-            rb.AddRelativeForce(- new Vector3(transform.rotation.x, transform.rotation.y).normalized * recoilForce, ForceMode2D.Impulse);
+            //rb.AddRelativeForce(Vector3.left * recoilForce, ForceMode2D.Impulse);
+            rb.AddForce(new Vector3((transform.rotation.eulerAngles.y == 0 ? -1 : 1) * cos, - sin, 0) * recoilForce, ForceMode2D.Impulse);
             timeAfterLastShoot = 0;
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Floor"))
-        {
-            transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, 0);
-            canRotation = false;
         }
     }
 }
