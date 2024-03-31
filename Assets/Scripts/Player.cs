@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     private float maxMoveSpeed = 7.5f; // максимальная скорость движения по горизонтали
     private float jumpForce = 8f; // сила прыжка 
     private float reboundForce = 7.5f; //сила прыжка от стены
-    public float moveDirection; // направление движения (W/D и стрелки)
+    private float moveDirection; // направление движения (W/D и стрелки)
     private float rotateSpeed = 240; // скорость вращения 
     private BoxCollider2D col;
     private Vector2 squatColliderSize = new(1.8f, 0.75f);
@@ -20,12 +20,14 @@ public class Player : MonoBehaviour
 
     [Header("Grounded")]
     [SerializeField] private Transform groundCheckPoint;
+    [SerializeField] private Transform upCheckPoint;
     [SerializeField] private Vector2 checkRadius;
     [SerializeField] private LayerMask whatIsGround;
     [SerializeField] private LayerMask whatIsWall;
     [SerializeField] private PhysicsMaterial2D normalMaterial;
     [SerializeField] private PhysicsMaterial2D squatMaterial;
     private bool isGrounded;
+    private bool isWallOnTop;
     private bool isSquat;
 
     [Header("Jump")]
@@ -36,6 +38,7 @@ public class Player : MonoBehaviour
 
     [Header("Shoot")]
     [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private GameObject bulletReversePrefab;
     [SerializeField] private Transform shootPlace;
     [SerializeField] private float recoilForce;
     [SerializeField] private float rechargeTime;
@@ -57,6 +60,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         isGrounded = Physics2D.OverlapBox(groundCheckPoint.position, checkRadius, 0f, whatIsGround);
+        isWallOnTop = Physics2D.OverlapBox(upCheckPoint.position, checkRadius / 2.0f, 0f, whatIsGround);
 
         isWallSliding = (wallCheckHitRight || wallCheckHitLeft) && !isGrounded;
         timeAfterLastShoot += Time.fixedDeltaTime;
@@ -132,7 +136,8 @@ public class Player : MonoBehaviour
             col.size = squatColliderSize;
             render.sprite = roboSpriteSit;
         }
-        else if (isSquat) {
+        else if (isSquat && !isWallOnTop)
+        {
             isSquat = false;
             rb.sharedMaterial = normalMaterial;
             col.size = normalColliderSize;
@@ -177,13 +182,17 @@ public class Player : MonoBehaviour
 
     private void TryToShoot()
     {
-        if (timeAfterLastShoot >= rechargeTime)
+        if (timeAfterLastShoot >= rechargeTime && !isSquat)
         {
-            // спавним пулю
-            Instantiate(bulletPrefab, shootPlace.position, shootPlace.rotation);
+            Vector3 recoilVector = new Vector3((transform.rotation.eulerAngles.y == 0 ? -1 : 1) * (float)Math.Cos(transform.rotation.eulerAngles.z * Math.PI / 180.0),
+                -(float)Math.Sin(transform.rotation.eulerAngles.z * Math.PI / 180.0), 0);
+            
+            // спавним пулю, надо пофиксить, смотрим влево - летит не туда 
+            Instantiate(transform.rotation.y == 0 ? bulletPrefab : bulletReversePrefab, 
+                shootPlace.position, transform.rotation);
+            
             // добавляем отдачу с силой recoilForce
-            rb.AddForce(new Vector3((transform.rotation.eulerAngles.y == 0 ? -1 : 1) * (float)Math.Cos(transform.rotation.eulerAngles.z * Math.PI / 180.0),
-                -(float)Math.Sin(transform.rotation.eulerAngles.z * Math.PI / 180.0), 0) * recoilForce * (isGrounded ? 0.5f : 1), ForceMode2D.Impulse);
+            rb.AddForce(recoilVector * recoilForce * (isGrounded ? 0.5f : 1), ForceMode2D.Impulse);
             timeAfterLastShoot = 0;
         }
     }

@@ -123,6 +123,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &16480672
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 16480673}
+  m_Layer: 0
+  m_Name: Up Check Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &16480673
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16480672}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.693, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 150546131}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &150546129
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,17 +181,17 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 150546129}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.010763912, w: 0.9999421}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.19, y: 2.57, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1397970535}
   - {fileID: 741111510}
-  - {fileID: 1170416509}
+  - {fileID: 16480673}
   - {fileID: 179907901}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1.233}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &150546132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,8 +204,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c2d555f942ee934d9e725b5f64dd105, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDirection: 0
   groundCheckPoint: {fileID: 741111510}
+  upCheckPoint: {fileID: 16480673}
   checkRadius: {x: 0.98, y: 0.75}
   whatIsGround:
     serializedVersion: 2
@@ -185,8 +216,9 @@ MonoBehaviour:
   normalMaterial: {fileID: 6200000, guid: 3ae17741bf7631e429054f2a7027e686, type: 2}
   squatMaterial: {fileID: 6200000, guid: eebd3c153f61b604f8b6ff08acb276b6, type: 2}
   wallDistance: 1.1
-  superJumpCoefficient: 2
+  superJumpCoefficient: 1.5
   bulletPrefab: {fileID: 5379853613737053142, guid: 40e42f23651cf774790586067ebf8b18, type: 3}
+  bulletReversePrefab: {fileID: 5379853613737053142, guid: 113992c85c713d74586f15ccdb4c5e2d, type: 3}
   shootPlace: {fileID: 179907901}
   recoilForce: 10
   rechargeTime: 1
@@ -263,7 +295,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.8, y: 0.75}
+  m_Size: {x: 1.8, y: 1.22}
   m_EdgeRadius: 0
 --- !u!1 &179907900
 GameObject:
@@ -788,8 +820,8 @@ Transform:
   m_GameObject: {fileID: 684946620}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 27.0578, y: 5.97845, z: 0}
-  m_LocalScale: {x: 37.066875, y: 1, z: 1}
+  m_LocalPosition: {x: 23.7481, y: 5.97845, z: 0}
+  m_LocalScale: {x: 30.445814, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1127,37 +1159,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!1 &1170416508
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1170416509}
-  m_Layer: 0
-  m_Name: Center
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1170416509
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1170416508}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 150546131}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1374759078
 GameObject:
   m_ObjectHideFlags: 0
@@ -1342,7 +1343,7 @@ Transform:
   m_GameObject: {fileID: 1397970534}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.28, z: 0}
+  m_LocalPosition: {x: -0.002, y: 0.159, z: 0}
   m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_ConstrainProportionsScale: 1
   m_Children: []
