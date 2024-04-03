@@ -8,6 +8,13 @@ public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; } // singleton
 
+    public AudioClip sitSound;
+    public AudioClip upSound;
+    public AudioClip jumpSound;
+    public AudioClip rollSound;
+    private bool isSquatSoundPlayed = false;
+    private bool isUpSoundPlayed = false;
+
     private Rigidbody2D rb;
     private float maxMoveSpeed = 7.5f; // максимальная скорость движения по горизонтали
     private float jumpForce = 8f; // сила прыжка 
@@ -131,6 +138,12 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.S))
         {
+            if (!isSquatSoundPlayed)
+            {
+                AudioSource.PlayClipAtPoint(sitSound, transform.position);
+                isSquatSoundPlayed = true;
+            }
+
             isSquat = true;
             rb.sharedMaterial = squatMaterial;
             col.size = squatColliderSize;
@@ -138,10 +151,22 @@ public class Player : MonoBehaviour
         }
         else if (isSquat && !isWallOnTop)
         {
+            if (!isUpSoundPlayed)
+            {
+                AudioSource.PlayClipAtPoint(upSound, transform.position);
+                isUpSoundPlayed = true;
+            }
+
             isSquat = false;
             rb.sharedMaterial = normalMaterial;
             col.size = normalColliderSize;
             render.sprite = roboSprite;
+        }
+
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            isSquatSoundPlayed = false;
+            isUpSoundPlayed = false;
         }
     }
 
@@ -162,7 +187,8 @@ public class Player : MonoBehaviour
         if (isGrounded)
         {
             // прыгаем, если в присяде, то прыжок сильнее в superJumpCoefficient раз
-            rb.velocity += (isSquat ? superJumpCoefficient : 1) * jumpForce * Vector2.up; 
+            rb.velocity += (isSquat ? superJumpCoefficient : 1) * jumpForce * Vector2.up;
+            AudioSource.PlayClipAtPoint(jumpSound, transform.position);
         }
         else if (isWallSliding)
         {
