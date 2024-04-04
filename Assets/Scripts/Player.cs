@@ -8,10 +8,14 @@ public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; } // singleton
 
+    public AudioClip moveSound;
     public AudioClip sitSound;
     public AudioClip upSound;
     public AudioClip jumpSound;
+    public AudioClip landingSound;
     public AudioClip rollSound;
+    public AudioClip rollStopSound;
+    public AudioClip shootSound;
     private bool isSquatSoundPlayed = false;
     private bool isUpSoundPlayed = false;
 
@@ -36,6 +40,7 @@ public class Player : MonoBehaviour
     private bool isGrounded;
     private bool isWallOnTop;
     private bool isSquat;
+
 
     [Header("Jump")]
     [SerializeField] private float wallDistance = 0.52f;
@@ -103,6 +108,7 @@ public class Player : MonoBehaviour
         Squat();
     }
 
+
     private void Move()
     {
         if (isGrounded)
@@ -112,7 +118,10 @@ public class Player : MonoBehaviour
             if (transform.rotation.eulerAngles.z != 0)
             {
                 transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+                AudioSource.PlayClipAtPoint(landingSound, transform.position); 
+                //приземление
             }
+
 
             if (!isSquat && Math.Abs(rb.velocity.x) < maxMoveSpeed)
             {
@@ -123,9 +132,10 @@ public class Player : MonoBehaviour
         }
         else
         {
-            if (moveDirection != 0)
+            if (moveDirection != 0) 
             {
-                rb.angularVelocity = moveDirection > 0 ? rotateSpeed : -rotateSpeed;
+                rb.angularVelocity = moveDirection > 0 ? rotateSpeed : -rotateSpeed;       
+                //полёт(перевороты)
             }
             else
             {
@@ -177,7 +187,7 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 180, 0);
         }
         else if (moveDirection > 0 && transform.rotation.eulerAngles.y != 0)
-        {
+        {   
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }
@@ -210,6 +220,7 @@ public class Player : MonoBehaviour
     {
         if (timeAfterLastShoot >= rechargeTime && !isSquat)
         {
+            AudioSource.PlayClipAtPoint(shootSound, transform.position);
             Vector3 recoilVector = new Vector3((transform.rotation.eulerAngles.y == 0 ? -1 : 1) * (float)Math.Cos(transform.rotation.eulerAngles.z * Math.PI / 180.0),
                 -(float)Math.Sin(transform.rotation.eulerAngles.z * Math.PI / 180.0), 0);
             
