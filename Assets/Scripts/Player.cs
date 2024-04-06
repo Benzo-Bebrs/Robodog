@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     private bool isUpSoundPlayed = false;
 
     private Rigidbody2D rb;
+    public float healthPoint = 3;
     private float maxMoveSpeed = 7.5f; // максимальная скорость движения по горизонтали
     private float jumpForce = 8f; // сила прыжка 
     private float reboundForce = 7.5f; //сила прыжка от стены
@@ -61,6 +62,19 @@ public class Player : MonoBehaviour
     [SerializeField] private Sprite roboSpriteSit;
     [SerializeField] private SpriteRenderer render;
 
+    public void Disable()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void TakeDamage(float amount)
+    {
+        healthPoint -= amount;
+        if (healthPoint <= 0)
+        {
+            Debug.Log("Player dead");
+        }
+    }
 
     private void Awake()
     {

@@ -3,7 +3,26 @@ guid: 1c2d555f942ee934d9e725b5f64dd105
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - moveSound: {instanceID: 0}
+  - sitSound: {instanceID: 0}
+  - upSound: {instanceID: 0}
+  - jumpSound: {instanceID: 0}
+  - landingSound: {instanceID: 0}
+  - rollSound: {instanceID: 0}
+  - rollStopSound: {instanceID: 0}
+  - shootSound: {instanceID: 0}
+  - groundCheckPoint: {instanceID: 0}
+  - upCheckPoint: {instanceID: 0}
+  - normalMaterial: {instanceID: 0}
+  - squatMaterial: {instanceID: 0}
+  - hookPrefab: {instanceID: 0}
+  - bulletPrefab: {instanceID: 0}
+  - bulletReversePrefab: {instanceID: 0}
+  - shootPlace: {instanceID: 0}
+  - roboSprite: {instanceID: 0}
+  - roboSpriteSit: {instanceID: 0}
+  - render: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
