@@ -7,7 +7,6 @@ public class DoorController : MonoBehaviour
     public KeyCode activationKey = KeyCode.Space; // Кнопка для активации
 
     public AudioClip buttonPressSound; // Звук нажатия кнопки
-    public AudioClip doorOpenSound; // Звук открытия двери
 
     private bool doorOpen = false; // Флаг, указывающий на состояние двери
     private Vector3 initialPosition; // Исходная позиция двери
@@ -54,7 +53,6 @@ public class DoorController : MonoBehaviour
         if (doorOpen)
         {
             targetPosition = initialPosition + new Vector3(0f, moveDistance, 0f);
-            PlaySound(doorOpenSound);
         }
 
         PlaySound(buttonPressSound);
