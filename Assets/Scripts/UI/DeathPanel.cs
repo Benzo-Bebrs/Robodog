@@ -3,35 +3,33 @@ using UnityEngine.SceneManagement;
 
 public class DeathScreen : MonoBehaviour
 {
-    public GameObject deathPanel; // Ссылка на панель экрана смерти
-    public Player player; // Ссылка на скрипт Player
+    public GameObject deathPanel; 
+    public Player player; 
 
     private void Start()
     {
-        // Скрыть панель экрана смерти при запуске сцены
         deathPanel.SetActive(false);
+        player.OnDeath += ShowDeathScreen;
     }
 
-    private void Update()
+    private void OnDestroy()
     {
-        // Проверить здоровье игрока
-        if (player.healthPoint <= 0)
-        {
-            // Отобразить панель экрана смерти и отключить персонаж
-            deathPanel.SetActive(true);
-            player.Disable();
+        player.OnDeath -= ShowDeathScreen;
+    }
 
-            // Запустить перезагрузку уровня через 3 секунды
-            Invoke(nameof(RestartLevel), 3f);
-        }
+    private void ShowDeathScreen()
+    {
+        deathPanel.SetActive(true);
+        player.gameObject.SetActive(false);
+
+        Invoke(nameof(RestartLevel), 3f);
     }
 
     private void RestartLevel()
     {
-        // Получить индекс текущей загруженной сцены
+
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
-        // Загрузить текущую сцену снова
         SceneManager.LoadScene(currentSceneIndex);
     }
 }

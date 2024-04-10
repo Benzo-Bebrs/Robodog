@@ -4,6 +4,7 @@ public class Laser : MonoBehaviour
 {
     public float activationTime = 2f; // Время активации лазера
     public float deactivationTime = 1f; // Время деактивации лазера
+    public float damageAmount = 1f; // Количество урона, наносимое игроку
 
     private SpriteRenderer spriteRenderer;
     private Collider2D collider;
@@ -47,7 +48,12 @@ public class Laser : MonoBehaviour
     {
         if (isActive && collision.CompareTag("Player"))
         {
-            Debug.Log("Player has been hit by the laser!");
+            Player player = collision.GetComponent<Player>();
+            if (player != null)
+            {
+                player.HealthPoint -= damageAmount;
+                Debug.Log("Player has been hit by the laser! Took " + damageAmount + " damage.");
+            }
         }
     }
 }

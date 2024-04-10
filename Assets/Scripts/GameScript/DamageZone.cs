@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class DamageZone : MonoBehaviour
 {
-    public float damageAmount = 1f; //  оличество урона, которое наноситс€ игроку
-    public float rechargeTime = 1f; // ¬рем€ перезар€дки перед следующим ударом
+    public float damageAmount = 1f; // Amount of damage to inflict on the player
+    public float rechargeTime = 1f; // Time delay before the next hit can be inflicted
 
-    private bool canDamage = true; // ‘лаг, показывающий, можно ли наносить урон в данный момент
+    private bool canDamage = true; // Flag indicating if damage can be inflicted at the moment
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -14,7 +14,7 @@ public class DamageZone : MonoBehaviour
             Player player = collision.GetComponent<Player>();
             if (player != null)
             {
-                player.TakeDamage(damageAmount);
+                player.HealthPoint -= damageAmount;
                 canDamage = false;
                 Invoke(nameof(Recharge), rechargeTime);
             }
