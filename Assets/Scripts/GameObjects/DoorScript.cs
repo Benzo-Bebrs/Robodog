@@ -1,13 +1,10 @@
 using UnityEngine;
 
-public class DoorController : MonoBehaviour
+public class DoorController : Sounds
 {
     public float moveDistance = 1f; // Расстояние, на которое будет двигаться дверь
     public float moveTime = 1f; // Время перемещения двери
     public KeyCode activationKey = KeyCode.Space; // Кнопка для активации
-
-    public AudioClip buttonPressSound; // Звук нажатия кнопки
-
     private bool doorOpen = false; // Флаг, указывающий на состояние двери
     private Vector3 initialPosition; // Исходная позиция двери
     private Vector3 targetPosition; // Целевая позиция двери
@@ -15,13 +12,12 @@ public class DoorController : MonoBehaviour
     private bool isMoving = false; // Флаг, указывающий на текущее состояние перемещения
     private bool used = false; // Флаг, указывающий на использование двери
 
-    private AudioSource audioSource; // Компонент AudioSource для воспроизведения звуков
+     // Компонент AudioSource для воспроизведения звуков
 
     private void Start()
     {
         initialPosition = transform.position;
         targetPosition = transform.position;
-        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -55,26 +51,7 @@ public class DoorController : MonoBehaviour
             targetPosition = initialPosition + new Vector3(0f, moveDistance, 0f);
         }
 
-        PlaySound(buttonPressSound);
+        PlaySound(0);
         isMoving = true;
-    }
-
-    private void PlaySound(AudioClip sound)
-    {
-        audioSource.clip = sound;
-        audioSource.Play();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        // Проверяем, чтобы дверь закрывалась только при входе другого объекта (например, игрока)
-        if (other.CompareTag("Player"))
-        {
-            if (doorOpen && !used)
-            {
-                ToggleDoor();
-                used = true;
-            }
-        }
     }
 }

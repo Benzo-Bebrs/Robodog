@@ -8,14 +8,7 @@ public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; } // singleton
 
-    public AudioClip moveSound;
-    public AudioClip sitSound;
-    public AudioClip upSound;
-    public AudioClip jumpSound;
-    public AudioClip landingSound;
-    public AudioClip rollSound;
-    public AudioClip rollStopSound;
-    public AudioClip shootSound;
+    private Sounds sounds;
     private bool isSquatSoundPlayed = false;
     private bool isUpSoundPlayed = false;
 
@@ -81,6 +74,7 @@ public class Player : MonoBehaviour
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
+        sounds = GetComponent<Sounds>();
     }
 
     private void FixedUpdate()
@@ -99,7 +93,6 @@ public class Player : MonoBehaviour
         if (isGrounded && transform.rotation.eulerAngles.z != 0)
         {
             transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-            AudioSource.PlayClipAtPoint(landingSound, transform.position);
             //приземление
         }
 
@@ -163,7 +156,7 @@ public class Player : MonoBehaviour
         {
             if (!isSquatSoundPlayed)
             {
-                AudioSource.PlayClipAtPoint(sitSound, transform.position);
+                sounds.PlaySound(1, 0.5f, false, false, 0.8f, 1f);
                 isSquatSoundPlayed = true;
             }
 
@@ -176,7 +169,7 @@ public class Player : MonoBehaviour
         {
             if (!isUpSoundPlayed)
             {
-                AudioSource.PlayClipAtPoint(upSound, transform.position);
+                sounds.PlaySound(2);
                 isUpSoundPlayed = true;
             }
 
@@ -211,7 +204,7 @@ public class Player : MonoBehaviour
         {
             // прыгаем, если в присяде, то прыжок сильнее в superJumpCoefficient раз
             rb.velocity += (isSquat ? superJumpCoefficient : 1) * jumpForce * Vector2.up;
-            AudioSource.PlayClipAtPoint(jumpSound, transform.position);
+            sounds.PlaySound(0);
         }
         else if (isWallSliding)
         {
@@ -236,7 +229,7 @@ public class Player : MonoBehaviour
         if (timeAfterLastShoot >= rechargeTime && !isSquat)
         {
             bool needBost = transform.rotation.eulerAngles.z > 240 && transform.rotation.eulerAngles.z < 300;
-            AudioSource.PlayClipAtPoint(shootSound, transform.position);
+            sounds.PlaySound(3);
             Vector3 recoilVector = new Vector3((transform.rotation.eulerAngles.y == 0 ? -1 : 1) * (float)Math.Cos(transform.rotation.eulerAngles.z * Math.PI / 180.0),
                 -(float)Math.Sin(transform.rotation.eulerAngles.z * Math.PI / 180.0), 0);
             

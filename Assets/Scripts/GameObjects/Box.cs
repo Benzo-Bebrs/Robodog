@@ -1,47 +1,53 @@
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour
+public class MoveBox : MonoBehaviour
 {
-    public AudioClip movementSound; // Звук движения
+    public AudioClip movementSound;
     private AudioSource audioSource;
+    private Rigidbody2D rb;
+    private bool isMoving;
     private bool isPlaying;
 
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.clip = movementSound;
+        audioSource.loop = true;
+        rb = GetComponent<Rigidbody2D>();
+        isMoving = false;
         isPlaying = false;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        // Проверяем, двигается ли объект со скоростью больше 1
-        if (GetComponent<Rigidbody2D>().velocity.magnitude > 1)
+        bool wasMoving = isMoving;
+        isMoving = rb.velocity.magnitude > 1;
+
+        if (isMoving && !wasMoving)
         {
-            if (!isPlaying)
-            {
-                PlayMovementSound();
-            }
+            StartMovementSound();
         }
-        else
+        else if (!isMoving && wasMoving)
         {
-            if (isPlaying)
-            {
-                StopMovementSound();
-            }
+            StopMovementSound();
         }
     }
 
-    private void PlayMovementSound()
+    private void StartMovementSound()
     {
-        audioSource.clip = movementSound;
-        audioSource.loop = true; // Зацикливаем звук
-        audioSource.Play();
-        isPlaying = true;
+        if (!isPlaying)
+        {
+            audioSource.Play();
+            isPlaying = true;
+        }
     }
 
     private void StopMovementSound()
     {
-        audioSource.Stop();
-        isPlaying = false;
+        if (isPlaying)
+        {
+            audioSource.Stop();
+            isPlaying = false;
+        }
     }
 }
