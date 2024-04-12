@@ -34,9 +34,9 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask whatIsWall;
     [SerializeField] private PhysicsMaterial2D normalMaterial;
     [SerializeField] private PhysicsMaterial2D squatMaterial;
-    private bool isGrounded;
+    public bool isGrounded;
     private bool isWallOnTop;
-    private bool isSquat;
+    public bool isSquat;
 
 
     [Header("Jump")]
@@ -57,6 +57,12 @@ public class Player : MonoBehaviour
     [SerializeField] private Sprite roboSprite;
     [SerializeField] private Sprite roboSpriteSit;
     [SerializeField] private SpriteRenderer render;
+
+    public float GetHorizontalMovement()
+    {
+        // Replace this with the actual code to get the horizontal movement value
+        return Input.GetAxis("Horizontal");
+    }
 
     public float HealthPoint
     {
