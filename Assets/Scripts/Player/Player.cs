@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
 
     public event Action<float> OnHealthChanged; // Событие смены здоровья
     public event Action OnDeath; // Событие смерти(((
-    private float healthPoint = 3;
+    private float healthPoint = 2;
 
     private Sounds sounds;
     private bool isSquatSoundPlayed = false;
