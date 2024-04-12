@@ -4403,7 +4403,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1894467925}
   - component: {fileID: 1894467927}
-  - component: {fileID: 1894467928}
   - component: {fileID: 1894467926}
   m_Layer: 0
   m_Name: footsteps
@@ -4439,8 +4438,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a044d8a667389f24b9e3079bc306682c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sounds: []
-  randSound: []
   footstepClips:
   - {fileID: 8300000, guid: c9cac8eb3f825a64194d58a9b86c309b, type: 3}
 --- !u!82 &1894467927
@@ -4539,23 +4536,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1894467928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1894467924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b4f7044c28d06c46a6adbac5c3e13b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sounds:
-  - {fileID: 0}
-  randSound:
-  - soundArray:
-    - {fileID: 8300000, guid: c9cac8eb3f825a64194d58a9b86c309b, type: 3}
 --- !u!1 &1911763974
 GameObject:
   m_ObjectHideFlags: 0
