@@ -149,8 +149,8 @@ public class Player : MonoBehaviour
         {
             if (moveDirection != 0) 
             {
-                rb.angularVelocity = moveDirection > 0 ? rotateSpeed : -rotateSpeed;       
                 //полёт(перевороты)
+                rb.angularVelocity = moveDirection > 0 ? -rotateSpeed : rotateSpeed;       
             }
             else
             {
