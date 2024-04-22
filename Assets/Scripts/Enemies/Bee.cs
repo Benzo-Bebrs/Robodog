@@ -19,7 +19,7 @@ public class Bee : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            player.Damage();
+            player.HealthPoint -= 1;
             Destroy(gameObject);
         }
         else if (collision.CompareTag("Bullet"))

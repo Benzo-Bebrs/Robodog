@@ -251,9 +251,4 @@ public class Player : MonoBehaviour
             timeAfterLastShoot = 0;
         }
     }
-
-    public void Damage()
-    {
-
-    }
 }
