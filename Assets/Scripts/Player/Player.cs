@@ -238,6 +238,7 @@ public class Player : MonoBehaviour
         if (timeAfterLastShoot >= rechargeTime && !isSquat)
         {
             bool needBost = transform.rotation.eulerAngles.z > 240 && transform.rotation.eulerAngles.z < 300;
+            CamController.cameraShake?.Invoke(10f, 0.1f, 0.1f);
             sounds.PlaySound(3);
             Vector3 recoilVector = new Vector3((transform.rotation.eulerAngles.y == 0 ? -1 : 1) * (float)Math.Cos(transform.rotation.eulerAngles.z * Math.PI / 180.0),
                 -(float)Math.Sin(transform.rotation.eulerAngles.z * Math.PI / 180.0), 0);
