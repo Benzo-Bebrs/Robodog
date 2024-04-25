@@ -5,67 +5,74 @@ using UnityEngine;
 
 public class Spider : MonoBehaviour
 {
-    [SerializeField] GameObject bulletPrefab;
-    [SerializeField] private float wallDistance = 0.52f;
+    [SerializeField] GameObject bulletPrefab, reverseBulletPrefab;
+    [SerializeField] Transform shootPlace;
+    [SerializeField] private Transform[] wayPoints;
+    [SerializeField] private Trigger playerTrigger;
+    [SerializeField] private float timeToMove = 2, timeToShoot = 1;
+    [SerializeField] private float speed = 3;
 
     private int state, newState;
     private System.Random rnd;
-    private RaycastHit2D wallCheckHitRight, wallCheckHitLeft;
-    private float moveTimer, timeToMove;
+    private float moveTimer, shootTimer;
+    private Player player;
 
-
-    // Start is called before the first frame update
     void Start()
     {
-        rnd = new System.Random();
-        timeToMove = 1.5f;
+        rnd = new System.Random();  
         state = 0; 
         newState = 0;
+        player = Player.Instance;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (newState != state && moveTimer < timeToMove)
+        if (newState != state)
         {
-            wallCheckHitRight = Physics2D.Raycast(transform.position, 
-                new Vector2(wallDistance, 0), wallDistance);
-            wallCheckHitLeft = Physics2D.Raycast(transform.position, 
-                new Vector2(-wallDistance, 0), wallDistance);
+            moveTimer = 0;
+            int deltState = (newState - state) / Math.Abs(newState - state);
+            if (transform.position == wayPoints[state + deltState].position)
+            {
+                state += deltState;
+            }
+            else
+            {
+                transform.position = Vector2.MoveTowards(transform.position, wayPoints[state + deltState].position, Time.deltaTime * speed);
+            }
+        }
+        else if (playerTrigger.isTriggered)
+        {
             moveTimer += Time.deltaTime;
-
+            shootTimer += Time.deltaTime;
+            if (shootTimer >= timeToShoot)
+            {
+                shootTimer = 0;
+                Shoot();
+            }
+            if (moveTimer >= timeToMove)
+            {
+                moveTimer = 0;
+                shootTimer = timeToShoot;
+                changePosition();
+            }
         }
 
+        if (!playerTrigger.isTriggered)
+        {
+            moveTimer = timeToMove;
+        }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void Shoot()
     {
-        if (collision.CompareTag("Player"))
-        {
-            changePosition();
-        }
+        Quaternion rotation = Quaternion.LookRotation(player.transform.position - shootPlace.position, shootPlace.TransformDirection(Vector3.up));
+        shootPlace.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
+        Instantiate(shootPlace.position.x >= player.transform.position.x ? reverseBulletPrefab : bulletPrefab, shootPlace.position, shootPlace.rotation);
+        shootPlace.rotation = new Quaternion(0, 0, 0, 0);
     }
 
     private void changePosition()
     {
-        newState = rnd.Next(-2, 3);
-        Move();
-    }
-
-    private void Jump()
-    {
-
-    }
-
-    private void Move()
-    {
-        if (newState == 1) // идем по часовой стрелке
-        {
-
-        }
-        else if (newState == -1) // идем против часовой стрелки
-        {
-
-        }
+        newState = rnd.Next(0, wayPoints.Length);
     }
 }
