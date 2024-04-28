@@ -1,71 +1,129 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Spider : MonoBehaviour
 {
-    [SerializeField] GameObject bulletPrefab;
-    [SerializeField] private float wallDistance = 0.52f;
+    [SerializeField] GameObject bulletPrefab, reverseBulletPrefab;
+    [SerializeField] Transform shootPlace;
+    [SerializeField] private Transform[] wayPoints;
+    [SerializeField] private Trigger playerTrigger;
+    [SerializeField] private float timeToMove = 2, timeToShoot = 1;
+    [SerializeField] private float speed = 3;
 
-    private int state, newState;
+    private SpriteRenderer sprite;
+    private int state, newState, deltState;
     private System.Random rnd;
-    private RaycastHit2D wallCheckHitRight, wallCheckHitLeft;
-    private float moveTimer, timeToMove;
+    private float moveTimer, shootTimer;
+    private Player player;
 
-
-    // Start is called before the first frame update
     void Start()
     {
-        rnd = new System.Random();
-        timeToMove = 1.5f;
+        rnd = new System.Random();  
         state = 0; 
         newState = 0;
+        player = Player.Instance;
+        sprite = GetComponentInChildren<SpriteRenderer>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (newState != state && moveTimer < timeToMove)
+        if (newState != state)
         {
-            wallCheckHitRight = Physics2D.Raycast(transform.position, 
-                new Vector2(wallDistance, 0), wallDistance);
-            wallCheckHitLeft = Physics2D.Raycast(transform.position, 
-                new Vector2(-wallDistance, 0), wallDistance);
-            moveTimer += Time.deltaTime;
-
+            Move();
+        }
+        else if (playerTrigger.isTriggered)
+        {
+            Stay();
         }
 
+        if (!playerTrigger.isTriggered)
+        {
+            moveTimer = timeToMove;
+        }
+    }
+
+    private void Stay()
+    {
+        moveTimer += Time.deltaTime;
+        shootTimer += Time.deltaTime;
+        if (shootTimer >= timeToShoot)
+        {
+            shootTimer = 0;
+            Shoot();
+        }
+        if (moveTimer >= timeToMove)
+        {
+            moveTimer = 0;
+            shootTimer = timeToShoot;
+            ChangePosition();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Bullet"))
         {
-            changePosition();
+            Destroy(gameObject);
         }
-    }
-
-    private void changePosition()
-    {
-        newState = rnd.Next(-2, 3);
-        Move();
-    }
-
-    private void Jump()
-    {
-
     }
 
     private void Move()
     {
-        if (newState == 1) // идем по часовой стрелке
+        moveTimer = 0;
+        deltState = (newState - state) / Math.Abs(newState - state);
+        if (transform.position == wayPoints[state + deltState].position)
         {
-
+            state += deltState;
         }
-        else if (newState == -1) // идем против часовой стрелки
+        else
         {
-
+            transform.position = Vector2.MoveTowards(transform.position, wayPoints[state + deltState].position, Time.deltaTime * speed);
         }
+        ChangeSpriteRotate();
+
+    }
+
+    private void ChangeSpriteRotate()
+    {
+        if (state == 0)
+        {
+            deltState = 1;
+        }
+        else if (state == wayPoints.Length - 1)
+        {
+            deltState = -1;
+        }
+        Vector3 toNextPos = wayPoints[state + deltState].position - wayPoints[state].position;
+
+
+        if (toNextPos.y > -0.1f && toNextPos.y < 0.1f) // ползем вправо/влево
+        {
+            sprite.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+            sprite.flipX = toNextPos.x < 0;
+            sprite.flipY = Physics2D.Raycast(transform.position, new Vector2(0, 1), 1, LayerMask.GetMask("Wall")) ||
+                Physics2D.Raycast(transform.position, new Vector2(0, 1), 1, LayerMask.GetMask("Ground"));
+        }
+        else if (toNextPos.x > -0.1f && toNextPos.x < 0.2f) // ползем вверх/вниз 
+        {
+            sprite.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
+            sprite.flipX = toNextPos.y < 0;
+            sprite.flipY = Physics2D.Raycast(transform.position, new Vector2(-1, 0), 1, LayerMask.GetMask("Wall"));
+        }
+    }
+
+    private void Shoot()
+    {
+        shootPlace.rotation = new Quaternion(0, 0, 0, 0);
+        Quaternion rotation = Quaternion.LookRotation(player.transform.position - shootPlace.position, shootPlace.TransformDirection(Vector3.up));
+        shootPlace.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
+        Instantiate(shootPlace.position.x >= player.transform.position.x ? reverseBulletPrefab : bulletPrefab, shootPlace.position, shootPlace.rotation);
+    }
+
+    private void ChangePosition()
+    {
+        newState = rnd.Next(0, wayPoints.Length);
     }
 }
