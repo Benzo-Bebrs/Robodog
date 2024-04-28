@@ -10,7 +10,7 @@ public class Trigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag(tagToCheckTrigger))
+        if (tagToCheckTrigger == "" || collision.CompareTag(tagToCheckTrigger))
         {
             isTriggered = true;
         }
@@ -18,7 +18,7 @@ public class Trigger : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag(tagToCheckTrigger))
+        if (tagToCheckTrigger == "" || collision.CompareTag(tagToCheckTrigger))
         {
             isTriggered = false;
         }

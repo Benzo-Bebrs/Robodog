@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bee : MonoBehaviour
@@ -32,10 +33,9 @@ public class Bee : MonoBehaviour
     {
         if (followTrigger1.isTriggered || followTrigger2.isTriggered)
         {
-            transform.rotation = Quaternion.Euler(0, 
-                player.transform.position.x >= transform.position.x ? 0 : 180, 
+            transform.rotation = Quaternion.Euler(0,
+                player.transform.position.x >= transform.position.x ? 0 : 180,
                 0);
-
             transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
         }
     }
