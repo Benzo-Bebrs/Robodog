@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using TMPro;
 
 public class SettingsMenu : MonoBehaviour
 {
     public TMP_Dropdown resolutionDropdown;
+    public GameObject pauseMenu;
 
     Resolution[] resolutions;
 
@@ -31,6 +31,14 @@ public class SettingsMenu : MonoBehaviour
         LoadSettings(currentResolutionIndex);
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            CloseSettings();
+        }
+    }
+
     public void SetFullScreen(bool isFullscreen)
     {
         Screen.fullScreen = isFullscreen;
@@ -42,7 +50,7 @@ public class SettingsMenu : MonoBehaviour
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
 
-    public void SaveSattings()
+    public void SaveSettings()
     {
         PlayerPrefs.SetInt("ResolutionPreference", resolutionDropdown.value);
         PlayerPrefs.SetInt("FullscreenPreference", System.Convert.ToInt32(Screen.fullScreen));
@@ -60,4 +68,15 @@ public class SettingsMenu : MonoBehaviour
         else
             Screen.fullScreen = true;
     }
+
+    // Метод для закрытия меню настроек
+    public void CloseSettings()
+    {
+        gameObject.SetActive(false); // Скрываем меню настроек
+        if (pauseMenu != null)
+        {
+            pauseMenu.SetActive(true); // Показываем меню паузы
+        }
+    }
 }
+    

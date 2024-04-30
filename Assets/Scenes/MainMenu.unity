@@ -398,6 +398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resolutionDropdown: {fileID: 1148917164}
+  pauseMenu: {fileID: 0}
 --- !u!1 &186021734
 GameObject:
   m_ObjectHideFlags: 0
