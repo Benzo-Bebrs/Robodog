@@ -57,6 +57,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Sprite roboSprite;
     [SerializeField] private Sprite roboSpriteSit;
     [SerializeField] private SpriteRenderer render;
+    private Animator animator;
 
     public float GetHorizontalMovement()
     {
@@ -84,6 +85,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
         sounds = GetComponent<Sounds>();
+        animator = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
@@ -125,9 +127,13 @@ public class Player : MonoBehaviour
         }
         else
         {
+            if (!isSquat && animator.GetInteger("Condition") == 1)
+            {
+                animator.SetInteger("Condition", -1);
+            }
             rb.angularVelocity = 0;
         }
-
+        
         Squat();
     }
 
@@ -136,6 +142,7 @@ public class Player : MonoBehaviour
     {
         if (isGrounded)
         {
+            animator.SetInteger("Condition", 1);
             rb.angularVelocity = 0;
 
             if (!isSquat && Math.Abs(rb.velocity.x) < maxMoveSpeed)
@@ -161,7 +168,7 @@ public class Player : MonoBehaviour
 
     private void Squat()
     {
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.S) && isGrounded)
         {
             if (!isSquatSoundPlayed)
             {
@@ -173,6 +180,10 @@ public class Player : MonoBehaviour
             rb.sharedMaterial = squatMaterial;
             col.size = squatColliderSize;
             render.sprite = roboSpriteSit;
+            if (animator.GetInteger("Condition") != 4)
+            {
+                animator.SetInteger("Condition", 2);
+            }
         }
         else if (isSquat && !isWallOnTop)
         {
@@ -186,6 +197,7 @@ public class Player : MonoBehaviour
             rb.sharedMaterial = normalMaterial;
             col.size = normalColliderSize;
             render.sprite = roboSprite;
+            animator.SetInteger("Condition", 3);
         }
 
         if (Input.GetKeyUp(KeyCode.S))
@@ -211,9 +223,8 @@ public class Player : MonoBehaviour
     {
         if (isGrounded)
         {
-            // прыгаем, если в присяде, то прыжок сильнее в superJumpCoefficient раз
-            rb.velocity += (isSquat ? superJumpCoefficient : 1) * jumpForce * Vector2.up;
-            sounds.PlaySound(0);
+            animator.SetInteger("Condition", 4);
+            Invoke(nameof(GroundJump), 0.2f);
         }
         else if (isWallSliding)
         {
@@ -231,6 +242,13 @@ public class Player : MonoBehaviour
                 //transform.rotation = Quaternion.Euler(0, 0, 0);
             }
         }
+    }
+
+    private void GroundJump()
+    {
+        // прыгаем, если в присяде, то прыжок сильнее в superJumpCoefficient раз
+        rb.velocity += (isSquat ? superJumpCoefficient : 1) * jumpForce * Vector2.up;
+        sounds.PlaySound(0);
     }
 
     private void TryToShoot()
