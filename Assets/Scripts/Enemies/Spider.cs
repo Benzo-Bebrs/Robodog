@@ -18,6 +18,7 @@ public class Spider : MonoBehaviour
     private System.Random rnd;
     private float moveTimer, shootTimer;
     private Player player;
+    private Animator animator;
 
     void Start()
     {
@@ -26,6 +27,7 @@ public class Spider : MonoBehaviour
         newState = 0;
         player = Player.Instance;
         sprite = GetComponentInChildren<SpriteRenderer>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -47,12 +49,14 @@ public class Spider : MonoBehaviour
 
     private void Stay()
     {
+        animator.SetInteger("Condition", 0);
         moveTimer += Time.deltaTime;
         shootTimer += Time.deltaTime;
         if (shootTimer >= timeToShoot)
         {
             shootTimer = 0;
-            Shoot();
+            animator.SetInteger("Condition", 2);
+            Invoke(nameof(Shoot), 0.15f);
         }
         if (moveTimer >= timeToMove)
         {
@@ -72,6 +76,7 @@ public class Spider : MonoBehaviour
 
     private void Move()
     {
+        animator.SetInteger("Condition", 1);
         moveTimer = 0;
         deltState = (newState - state) / Math.Abs(newState - state);
         if (transform.position == wayPoints[state + deltState].position)

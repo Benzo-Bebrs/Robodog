@@ -10,7 +10,7 @@ public class Bee : MonoBehaviour
     private Trigger followTrigger1, followTrigger2; // триггеры для отслевживания игрока
     private Rigidbody2D rb;
 
-    private void Awake()
+    private void Start()
     {
         player = Player.Instance;
         followTrigger1 = transform.GetChild(0).GetComponent<Trigger>();
