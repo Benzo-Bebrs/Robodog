@@ -154,6 +154,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            animator.SetInteger("Condition", -1);
             if (moveDirection != 0) 
             {
                 //полёт(перевороты)

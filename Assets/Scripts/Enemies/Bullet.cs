@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    [SerializeField] GameObject explodePrefab;
     private float lifeTime = 0;
     private float maxLifeTime = 3;
 
@@ -20,7 +21,14 @@ public class Bullet : MonoBehaviour
     {
         if (!collision.isTrigger && !collision.CompareTag("Player") && !collision.CompareTag("Enemy"))
         {
-            Destroy(gameObject);
+            Explode();
         }
+    }
+
+    private void Explode()
+    {
+        Instantiate(explodePrefab, transform.position, Quaternion.identity);
+        
+        Destroy(gameObject);
     }
 }

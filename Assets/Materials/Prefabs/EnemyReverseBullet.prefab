@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7661769037698020415}
   - component: {fileID: 2768192469551130917}
   - component: {fileID: -1647381058145351810}
-  - component: {fileID: -3949685858956486673}
+  - component: {fileID: -328784560820159787}
   m_Layer: 0
   m_Name: EnemyReverseBullet
   m_TagString: Enemy Bullet
@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.161, y: 1.986, z: 0}
-  m_LocalScale: {x: 0.23, y: 0.23, z: 0.23}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 61413066c97cd864a9a87d9947f70ca7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -161,7 +161,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &-3949685858956486673
+--- !u!114 &-328784560820159787
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -170,6 +170,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5379853613737053142}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d9bfa61243784c4ba568459d0da99ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 28d426865612cd4409fa439ccec73262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explodePrefab: {fileID: 5439238828333953635, guid: f952a9fe59cca5842bae556eba964146, type: 3}
