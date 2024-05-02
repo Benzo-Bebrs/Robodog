@@ -6,12 +6,12 @@ public class BoyBot : MonoBehaviour
 {
     [SerializeField] private GameObject ball;
     [SerializeField] private Transform throwPlace;
+    [SerializeField] private GameObject objectToDestroy; 
     private RealPlayer player;
     private bool isPlayerInArea;
     private Animator animator;
     private int throwNum = 1;
 
-    // Start is called before the first frame update
     void Start()
     {
         player = RealPlayer.Instance;
@@ -34,7 +34,6 @@ public class BoyBot : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (player.isUpBall)
@@ -61,5 +60,10 @@ public class BoyBot : MonoBehaviour
         ball.SetActive(true);
         ball.GetComponent<Rigidbody2D>().velocity += new Vector2(6.5f + throwNum * 2, 6.5f + throwNum * 2);
         throwNum++;
+
+        if (throwNum == 4)
+        {
+            Destroy(objectToDestroy);
+        }
     }
 }
