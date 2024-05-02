@@ -1,18 +1,25 @@
+using System;
 using UnityEngine;
 
 public class RealPlayer : MonoBehaviour
 {
+    public static RealPlayer Instance { get; private set; }
+
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private GameObject mouseBall;
 
     private Animator animator;
     private Vector3 lastMoveDirection = Vector3.right;
     private bool canUpBall;
+    public bool isUpBall;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
-        mouseBall.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -46,11 +53,11 @@ public class RealPlayer : MonoBehaviour
             lastMoveDirection = Vector3.left;
         }
 
-        animator.SetInteger("Condition", horizontalInput != 0 ? 1 : 0);
+        animator.SetInteger("Condition", horizontalInput != 0 ? (isUpBall ? 2 : 1) : (isUpBall ? -1 : 0));
 
-        if (canUpBall && Input.GetKeyDown(KeyCode.F))
+        if (canUpBall)
         {
-            animator.SetInteger("Condition", 2);
+            animator.SetInteger("Condition", 3);
             Invoke(nameof(UpBall), 0.4f);
         }
 
@@ -59,6 +66,6 @@ public class RealPlayer : MonoBehaviour
 
     private void UpBall()
     {
-        mouseBall.SetActive(true);
+        isUpBall = true;
     }
 }
