@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CarTrigger : MonoBehaviour
 {
@@ -26,5 +27,8 @@ public class CarTrigger : MonoBehaviour
 		player.SetActive(false);
 		yield return new WaitForSeconds(3f);
 		Fade.SetActive(true);
+		yield return new WaitForSeconds(3f);
+		var index = SceneManager.GetActiveScene().buildIndex;
+		SceneManager.LoadScene(index + 1); 
 	}
 }
