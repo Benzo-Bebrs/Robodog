@@ -110,12 +110,14 @@ public class Spider : MonoBehaviour
             sprite.flipX = toNextPos.x < 0;
             sprite.flipY = Physics2D.Raycast(transform.position, new Vector2(0, 1), 1, LayerMask.GetMask("Wall")) ||
                 Physics2D.Raycast(transform.position, new Vector2(0, 1), 1, LayerMask.GetMask("Ground"));
+            shootPlace.localPosition = new Vector3(-0.24f, 0.4f * (sprite.flipY ? -1 : 1), 0);
         }
         else if (toNextPos.x > -0.1f && toNextPos.x < 0.2f) // ползем вверх/вниз 
         {
             sprite.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
             sprite.flipX = toNextPos.y < 0;
             sprite.flipY = Physics2D.Raycast(transform.position, new Vector2(-1, 0), 1, LayerMask.GetMask("Wall"));
+            shootPlace.localPosition = new Vector3(0.5f * (sprite.flipY ? 1 : -1), 0, 0);
         }
     }
 
