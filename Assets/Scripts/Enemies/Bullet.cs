@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.isTrigger && !collision.CompareTag("Player") && !collision.CompareTag("Enemy"))
+        if ((!collision.isTrigger && !collision.CompareTag("Player")) || collision.CompareTag("Enemy"))
         {
             Explode();
         }
