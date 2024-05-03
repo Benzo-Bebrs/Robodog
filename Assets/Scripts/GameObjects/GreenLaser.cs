@@ -4,15 +4,13 @@ public class Laser : MonoBehaviour
 {
     public float activationTime = 2f; // Время активации лазера
     public float deactivationTime = 1f; // Время деактивации лазера
-    public float damageAmount = 1f; // Количество урона, наносимое игроку
+    public float damageAmount = 1f; // Количество урона, наносимого игроку
 
-    private SpriteRenderer spriteRenderer;
     private Collider2D collider;
     private bool isActive = false;
 
     private void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
         collider = GetComponent<Collider2D>();
         DeactivateLaser();
         InvokeRepeating("ToggleLaser", activationTime, activationTime + deactivationTime);
@@ -33,14 +31,14 @@ public class Laser : MonoBehaviour
     private void ActivateLaser()
     {
         isActive = true;
-        spriteRenderer.enabled = true;
+        gameObject.SetActive(true);
         collider.enabled = true;
     }
 
     private void DeactivateLaser()
     {
         isActive = false;
-        spriteRenderer.enabled = false;
+        gameObject.SetActive(false);
         collider.enabled = false;
     }
 
