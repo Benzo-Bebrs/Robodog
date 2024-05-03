@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,6 +32,6 @@ public class Boy : MonoBehaviour
 
         animator.SetInteger("Condition", horizontalInput != 0 ? 1 : 0);
 
-        transform.localScale = new Vector3(Mathf.Sign(lastMoveDirection.x), 1f, 1f);
+        transform.localScale = new Vector3(Mathf.Sign(lastMoveDirection.x) * Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
     }
 }
