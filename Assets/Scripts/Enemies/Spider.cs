@@ -12,6 +12,7 @@ public class Spider : MonoBehaviour
     [SerializeField] private Trigger playerTrigger;
     [SerializeField] private float timeToMove = 2, timeToShoot = 1;
     [SerializeField] private float speed = 3;
+    [SerializeField] private int startState;
 
     private SpriteRenderer sprite;
     private int state, newState, deltState;
@@ -23,8 +24,8 @@ public class Spider : MonoBehaviour
     void Start()
     {
         rnd = new System.Random();  
-        state = 0; 
-        newState = 0;
+        state = startState; 
+        newState = startState;
         player = Player.Instance;
         sprite = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponentInChildren<Animator>();
@@ -88,7 +89,6 @@ public class Spider : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, wayPoints[state + deltState].position, Time.deltaTime * speed);
         }
         ChangeSpriteRotate();
-
     }
 
     private void ChangeSpriteRotate()
