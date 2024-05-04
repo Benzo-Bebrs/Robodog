@@ -35,7 +35,15 @@ public class SettingsMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            CloseSettings();
+            if (gameObject.activeSelf) // Если меню настроек открыто
+            {
+                CloseSettings();
+            }
+            else if (pauseMenu != null && pauseMenu.activeSelf) // Если открыто меню паузы
+            {
+                pauseMenu.SetActive(false); // Скрываем меню паузы
+                gameObject.SetActive(true); // Показываем меню настроек
+            }
         }
     }
 
