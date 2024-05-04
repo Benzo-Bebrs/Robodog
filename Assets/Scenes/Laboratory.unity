@@ -1909,6 +1909,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 181571630}
   m_CullTransparentMesh: 1
+--- !u!1 &189332702 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5818340228822254469, guid: 5b9f0ea4c089ce847a2a2dee12211688, type: 3}
+  m_PrefabInstance: {fileID: 1584553803}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &190769296
 GameObject:
   m_ObjectHideFlags: 0
@@ -6808,6 +6813,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1332566736}
+        m_TargetAssemblyTypeName: VolumeValue, Assembly-CSharp
+        m_MethodName: SetVolume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1070622146
 GameObject:
   m_ObjectHideFlags: 0
@@ -8751,6 +8768,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1332566736}
+        m_TargetAssemblyTypeName: VolumeValue, Assembly-CSharp
+        m_MethodName: OnOffSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1302380666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9048,12 +9077,25 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7564197632806750741, guid: 5b9f0ea4c089ce847a2a2dee12211688, type: 3}
   m_PrefabInstance: {fileID: 1584553803}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 189332702}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c2d555f942ee934d9e725b5f64dd105, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1332566736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 189332702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c88aee1ff483c43299286e98c96de8f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOn: 0
 --- !u!1 &1333891565
 GameObject:
   m_ObjectHideFlags: 0
@@ -10378,7 +10420,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5818340228822254469, guid: 5b9f0ea4c089ce847a2a2dee12211688, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1332566736}
   m_SourcePrefab: {fileID: 100100000, guid: 5b9f0ea4c089ce847a2a2dee12211688, type: 3}
 --- !u!4 &1586848569 stripped
 Transform:
