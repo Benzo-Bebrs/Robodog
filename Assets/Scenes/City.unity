@@ -2699,7 +2699,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 519420035}
         m_TargetAssemblyTypeName: VolumeValue, Assembly-CSharp
         m_MethodName: SetVolume
         m_Mode: 0
@@ -10309,7 +10309,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 519420035}
         m_TargetAssemblyTypeName: VolumeValue, Assembly-CSharp
         m_MethodName: OnOffSound
         m_Mode: 1
@@ -24722,6 +24722,7 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 206516736}
   - {fileID: 871229559}
+  - {fileID: 1713222640}
   - {fileID: 1368754998}
   - {fileID: 1711240471}
   - {fileID: 281580341}
@@ -24770,4 +24771,3 @@ SceneRoots:
   - {fileID: 547181044}
   - {fileID: 1440560726}
   - {fileID: 1023220545}
-  - {fileID: 1713222640}
