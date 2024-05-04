@@ -9,9 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 26a1b3686d649417da364830b613ad42
   - enabled: 1
+    path: Assets/Scenes/City.unity
+    guid: ce7d765c19e4b894e89f0dfd907ea0bb
+  - enabled: 1
     path: Assets/Scenes/Home.unity
     guid: 3810435d3021dba49bab1e8a5a2fbb62
   - enabled: 1
-    path: Assets/Scenes/City.unity
-    guid: ce7d765c19e4b894e89f0dfd907ea0bb
+    path: Assets/Scenes/Laboratory.unity
+    guid: 561709ddd90ac9e4a8df53cc951370ec
   m_configObjects: {}
