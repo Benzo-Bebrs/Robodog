@@ -10,14 +10,14 @@ public class Spider : MonoBehaviour
     [SerializeField] Transform shootPlace;
     [SerializeField] private Transform[] wayPoints;
     [SerializeField] private Trigger playerTrigger;
-    [SerializeField] private float timeToMove = 2, timeToShoot = 1;
+    [SerializeField] private float timeToStay = 2, timeToShoot = 1;
     [SerializeField] private float speed = 3;
     [SerializeField] private int startState;
 
     private SpriteRenderer sprite;
     private int state, newState, deltState;
     private System.Random rnd;
-    private float moveTimer, shootTimer;
+    private float stayTimer, shootTimer;
     private Player player;
     private Animator animator;
 
@@ -48,15 +48,15 @@ public class Spider : MonoBehaviour
 
         if (!playerTrigger.isTriggered)
         {
-            moveTimer = 0;
+            stayTimer = 0;
             shootTimer = timeToShoot;
         }
     }
 
     private void Stay()
     {
-        animator.SetInteger("Condition", 0);
-        moveTimer += Time.deltaTime;
+        
+        stayTimer += Time.deltaTime;
         shootTimer += Time.deltaTime;
         if (shootTimer >= timeToShoot)
         {
@@ -64,9 +64,13 @@ public class Spider : MonoBehaviour
             animator.SetInteger("Condition", 2);
             Invoke(nameof(Shoot), 0.15f);
         }
-        if (moveTimer >= timeToMove)
+        else
         {
-            moveTimer = 0;
+            animator.SetInteger("Condition", 0);
+        }
+        if (stayTimer >= timeToStay)
+        {
+            stayTimer = 0;
             shootTimer = timeToShoot;
             ChangePosition();
         }
@@ -83,7 +87,7 @@ public class Spider : MonoBehaviour
     private void Move()
     {
         animator.SetInteger("Condition", 1);
-        moveTimer = 0;
+        stayTimer = 0;
         deltState = (newState - state) / Math.Abs(newState - state);
         if (transform.position == wayPoints[state + deltState].position)
         {
@@ -137,5 +141,9 @@ public class Spider : MonoBehaviour
     private void ChangePosition()
     {
         newState = rnd.Next(0, wayPoints.Length);
+        if (newState == state)
+        {
+            shootTimer = 0;    
+        }
     }
 }
