@@ -41,10 +41,15 @@ public class Spider : MonoBehaviour
         {
             Stay();
         }
+        else if (!playerTrigger.isTriggered)
+        {
+            animator.SetInteger("Condition", 0);
+        }
 
         if (!playerTrigger.isTriggered)
         {
-            moveTimer = timeToMove;
+            moveTimer = 0;
+            shootTimer = timeToShoot;
         }
     }
 

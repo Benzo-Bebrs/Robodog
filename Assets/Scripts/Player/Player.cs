@@ -44,6 +44,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float superJumpCoefficient = 1.5f;
     private bool isWallSliding;
     private RaycastHit2D wallCheckHitRight, wallCheckHitLeft;
+    private float jumpTimer;
+    private float timeToJump = 0.3f;
 
     [Header("Shoot")]
     [SerializeField] private GameObject bulletPrefab;
@@ -135,6 +137,8 @@ public class Player : MonoBehaviour
         }
         
         Squat();
+
+        jumpTimer += Time.deltaTime;
     }
 
 
@@ -222,10 +226,11 @@ public class Player : MonoBehaviour
 
     private void TryToJump()
     {
-        if (isGrounded)
+        if (isGrounded && jumpTimer > timeToJump)
         {
             animator.SetInteger("Condition", 4);
             Invoke(nameof(GroundJump), 0.2f);
+            jumpTimer = 0;
         }
         else if (isWallSliding)
         {
