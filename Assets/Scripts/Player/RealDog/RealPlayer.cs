@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class RealPlayer : MonoBehaviour
@@ -6,11 +7,14 @@ public class RealPlayer : MonoBehaviour
     public static RealPlayer Instance { get; private set; }
 
     [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private AudioClip footstepSound;
+    [SerializeField] private float footstepDelay = 0.5f;
 
     private Animator animator;
     private Vector3 lastMoveDirection = Vector3.right;
     private bool canUpBall;
     public bool isUpBall;
+    private bool canPlayFootstep = true;
 
     private void Awake()
     {
@@ -26,7 +30,7 @@ public class RealPlayer : MonoBehaviour
     {
         if (collision.CompareTag("Ball"))
         {
-            canUpBall= true;
+            canUpBall = true;
         }
     }
 
@@ -61,11 +65,29 @@ public class RealPlayer : MonoBehaviour
             Invoke(nameof(UpBall), 0.4f);
         }
 
+        PlayFootstepSound(horizontalInput);
         transform.localScale = new Vector3(Mathf.Sign(lastMoveDirection.x) * Math.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
     }
 
     private void UpBall()
     {
         isUpBall = true;
+    }
+
+    private void PlayFootstepSound(float horizontalInput)
+    {
+        if (horizontalInput != 0 && canPlayFootstep && !GetComponent<AudioSource>().isPlaying)
+        {
+            GetComponent<AudioSource>().clip = footstepSound;
+            GetComponent<AudioSource>().Play();
+            StartCoroutine(DelayNextFootstep());
+        }
+    }
+
+    private IEnumerator DelayNextFootstep()
+    {
+        canPlayFootstep = false;
+        yield return new WaitForSeconds(footstepDelay);
+        canPlayFootstep = true;
     }
 }
