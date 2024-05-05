@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public class SettingsMenu : MonoBehaviour
+public class SettingsMainMenu : MonoBehaviour
 {
     public TMP_Dropdown resolutionDropdown;
     public GameObject pauseMenu;
@@ -30,22 +30,6 @@ public class SettingsMenu : MonoBehaviour
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.RefreshShownValue();
         LoadSettings(currentResolutionIndex);
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (gameObject.activeSelf) // Если меню настроек открыто
-            {
-                CloseSettings();
-            }
-            else if (pauseMenu != null && pauseMenu.activeSelf) // Если открыто меню паузы
-            {
-                pauseMenu.SetActive(false); // Скрываем меню паузы
-                gameObject.SetActive(true); // Показываем меню настроек
-            }
-        }
     }
 
     public void SetFullScreen(bool isFullscreen)
@@ -88,4 +72,3 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 }
-    
