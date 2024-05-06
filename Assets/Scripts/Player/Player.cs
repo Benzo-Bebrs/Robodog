@@ -117,7 +117,7 @@ public class Player : MonoBehaviour
             TryToJump();
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetMouseButtonDown(0))
         {
             TryToShoot();
         }
