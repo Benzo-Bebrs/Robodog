@@ -16433,7 +16433,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2953753051244561713, guid: a33e9783979c1134eb052f2a4462a7ad, type: 3}
       propertyPath: m_Pitch
-      value: 0.11
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 2953753051244561713, guid: a33e9783979c1134eb052f2a4462a7ad, type: 3}
       propertyPath: Priority
@@ -16513,7 +16513,7 @@ PrefabInstance:
       objectReference: {fileID: 1610947698}
     - target: {fileID: 8292129905720461759, guid: a33e9783979c1134eb052f2a4462a7ad, type: 3}
       propertyPath: footstepDelay
-      value: 0.7
+      value: 0.85
       objectReference: {fileID: 0}
     - target: {fileID: 8292129905720461759, guid: a33e9783979c1134eb052f2a4462a7ad, type: 3}
       propertyPath: footstepSound
