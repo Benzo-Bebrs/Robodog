@@ -7,15 +7,18 @@ public class BoyBot : MonoBehaviour
     [SerializeField] private GameObject ball;
     [SerializeField] private Transform throwPlace;
     [SerializeField] private GameObject objectToDestroy; 
+    [SerializeField] private GameObject phraseObject; 
+    [SerializeField] private Transform phrasePlace; 
     private RealPlayer player;
     private bool isPlayerInArea;
     private Animator animator;
-    private int throwNum = 1;
+    private int throwNum = 0;
 
     void Start()
     {
         player = RealPlayer.Instance;
         animator = GetComponent<Animator>();
+        ThrowBall();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -56,6 +59,10 @@ public class BoyBot : MonoBehaviour
 
     private void ThrowBall()
     {
+        if (throwNum == 0)
+        {
+            Instantiate(phraseObject, phrasePlace.position, Quaternion.identity);
+        }
         ball.transform.position = throwPlace.position;
         ball.SetActive(true);
         ball.GetComponent<Rigidbody2D>().velocity += new Vector2(6.5f + throwNum * 2, 6.5f + throwNum * 2);

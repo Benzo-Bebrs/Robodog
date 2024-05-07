@@ -18,9 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Laboratory.unity
     guid: 561709ddd90ac9e4a8df53cc951370ec
   - enabled: 1
-    path: Assets/Scenes/EndScene.unity
-    guid: 3589f79243f9fe94395eacc441e278a7
-  - enabled: 1
     path: Assets/Scenes/LaboratoryCP.unity
     guid: b8df5597b274b2f4baf04abcaf5c77fc
+  - enabled: 1
+    path: Assets/Scenes/EndScene.unity
+    guid: 3589f79243f9fe94395eacc441e278a7
   m_configObjects: {}

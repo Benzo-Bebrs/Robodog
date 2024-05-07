@@ -5,10 +5,17 @@ using UnityEngine;
 
 public class Boy : MonoBehaviour
 {
+    public static Boy Instance { get; private set; }
+
     [SerializeField] private float moveSpeed = 5f;
 
     private Animator animator;
     private Vector3 lastMoveDirection = Vector3.right;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
