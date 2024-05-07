@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -25,6 +26,11 @@ public class Player : MonoBehaviour
     private CapsuleCollider2D col;
     private Vector2 squatColliderSize = new(1.8f, 0.75f);
     private Vector2 normalColliderSize = new(1.8f, 1.22f);
+    
+
+    [Header("CheckPoints")]
+    [SerializeField] private Trigger checkPointTrigger;
+    public bool isCheckPoint { get; private set; }
 
     [Header("Grounded")]
     [SerializeField] private Transform groundCheckPoint;
@@ -34,10 +40,9 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask whatIsWall;
     [SerializeField] private PhysicsMaterial2D normalMaterial;
     [SerializeField] private PhysicsMaterial2D squatMaterial;
-    public bool isGrounded;
+    public bool isGrounded { get; private set; }
     private bool isWallOnTop;
-    public bool isSquat;
-
+    public bool isSquat { get; private set; }
 
     [Header("Jump")]
     [SerializeField] private float wallDistance = 0.52f;
@@ -139,8 +144,12 @@ public class Player : MonoBehaviour
         Squat();
 
         jumpTimer += Time.deltaTime;
-    }
 
+        if (checkPointTrigger.isTriggered)
+        {
+            isCheckPoint = true;
+        }
+    }
 
     private void Move()
     {

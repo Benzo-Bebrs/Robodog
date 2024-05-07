@@ -20,6 +20,6 @@ public class EndScene : MonoBehaviour
         Fade.SetActive(true);
         yield return new WaitForSeconds(3f);
         var index = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(index + 1);
+        SceneManager.LoadScene(index + 1 + (index == 3 ? 1 : 0));
     }
 }

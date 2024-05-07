@@ -4,10 +4,11 @@ using UnityEngine.SceneManagement;
 public class DeathScreen : MonoBehaviour
 {
     public GameObject deathPanel; 
-    public Player player; 
+    private Player player; 
 
     private void Start()
     {
+        player = Player.Instance;
         deathPanel.SetActive(false);
         player.OnDeath += ShowDeathScreen;
     }
@@ -27,9 +28,14 @@ public class DeathScreen : MonoBehaviour
 
     private void RestartLevel()
     {
-
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-
-        SceneManager.LoadScene(currentSceneIndex);
+        if (player.isCheckPoint)
+        {
+            SceneManager.LoadScene("LaboratoryCP");
+        }
+        else
+        {
+            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currentSceneIndex);
+        }
     }
 }
