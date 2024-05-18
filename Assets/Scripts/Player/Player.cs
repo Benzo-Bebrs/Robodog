@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     private CapsuleCollider2D col;
     private Vector2 squatColliderSize = new(1.8f, 0.75f);
     private Vector2 normalColliderSize = new(1.8f, 1.22f);
-    
+    private Camera cam;
 
     [Header("CheckPoints")]
     [SerializeField] private Trigger checkPointTrigger;
@@ -93,6 +93,7 @@ public class Player : MonoBehaviour
         col = GetComponent<CapsuleCollider2D>();
         sounds = GetComponent<Sounds>();
         animator = GetComponent<Animator>();
+        cam = Camera.main;
     }
 
     private void FixedUpdate()
@@ -104,6 +105,11 @@ public class Player : MonoBehaviour
         timeAfterLastShoot += Time.fixedDeltaTime;
         
         rb.freezeRotation = isGrounded;
+
+        if (!isGrounded)
+        {
+            Flying();
+        }
     }
 
     private void Update()
@@ -140,15 +146,22 @@ public class Player : MonoBehaviour
             }
             rb.angularVelocity = 0;
         }
-        
-        Squat();
 
-        jumpTimer += Time.deltaTime;
+        Squat();
 
         if (checkPointTrigger.isTriggered)
         {
             isCheckPoint = true;
         }
+
+        jumpTimer += Time.deltaTime;
+    }
+
+    private void Flying()
+    {
+        Vector3 diff = cam.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        float rotateZ = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, rotateZ);
     }
 
     private void Move()
@@ -165,19 +178,19 @@ public class Player : MonoBehaviour
 
             Turn();
         }
-        else
-        {
-            animator.SetInteger("Condition", -1);
-            if (moveDirection != 0) 
-            {
-                //полёт(перевороты)
-                rb.angularVelocity = moveDirection > 0 ? -rotateSpeed : rotateSpeed;       
-            }
-            else
-            {
-                rb.angularVelocity = 0;
-            }
-        }
+        //else
+        //{
+        //    animator.SetInteger("Condition", -1);
+        //    if (moveDirection != 0) 
+        //    {
+        //        //полёт(перевороты)
+        //        rb.angularVelocity = moveDirection > 0 ? -rotateSpeed : rotateSpeed;       
+        //    }
+        //    else
+        //    {
+        //        rb.angularVelocity = 0;
+        //    }
+        //}
     }
 
     private void Squat()
