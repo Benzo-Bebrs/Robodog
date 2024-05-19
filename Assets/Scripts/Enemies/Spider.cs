@@ -12,10 +12,10 @@ public class Spider : MonoBehaviour
     [SerializeField] private Trigger playerTrigger;
     [SerializeField] private float timeToStay = 2, timeToShoot = 1;
     [SerializeField] private float speed = 3;
-    [SerializeField] private int startState;
+    [SerializeField] private int startState, maxShootsCount = 1;
 
     private SpriteRenderer sprite;
-    private int state, newState, deltState;
+    private int state, newState, deltState, shootsCount;
     private System.Random rnd;
     private float stayTimer, shootTimer;
     private Player player;
@@ -49,18 +49,18 @@ public class Spider : MonoBehaviour
         if (!playerTrigger.isTriggered)
         {
             stayTimer = 0;
-            shootTimer = timeToShoot;
+            shootTimer = 0;
         }
     }
 
     private void Stay()
     {
-        
         stayTimer += Time.deltaTime;
         shootTimer += Time.deltaTime;
-        if (shootTimer >= timeToShoot)
+        if (shootTimer >= timeToShoot && shootsCount < maxShootsCount)
         {
             shootTimer = 0;
+            shootsCount++;
             animator.SetInteger("Condition", 2);
             Invoke(nameof(Shoot), 0.15f);
         }
@@ -71,7 +71,7 @@ public class Spider : MonoBehaviour
         if (stayTimer >= timeToStay)
         {
             stayTimer = 0;
-            shootTimer = timeToShoot;
+            shootTimer = 0;
             ChangePosition();
         }
     }
@@ -143,7 +143,8 @@ public class Spider : MonoBehaviour
         newState = rnd.Next(0, wayPoints.Length);
         if (newState == state)
         {
-            shootTimer = 0;    
+            shootTimer = 0;
         }
+        shootsCount = 0;
     }
 }

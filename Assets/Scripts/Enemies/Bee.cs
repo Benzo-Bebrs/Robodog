@@ -9,6 +9,7 @@ public class Bee : MonoBehaviour
     private Player player;
     private Trigger followTrigger1, followTrigger2; // триггеры для отслевживания игрока
     private Rigidbody2D rb;
+    private Animator animator;
 
     private void Start()
     {
@@ -16,6 +17,7 @@ public class Bee : MonoBehaviour
         followTrigger1 = transform.GetChild(0).GetComponent<Trigger>();
         followTrigger2 = transform.GetChild(1).GetComponent<Trigger>();
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -28,10 +30,12 @@ public class Bee : MonoBehaviour
             Vector2 delt = player.transform.position - transform.position;
             rb.velocity = delt.normalized * speed;
             //transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+            animator.SetInteger("Condition", 1);
         }
         else
         {
             rb.velocity = Vector2.zero;
+            animator.SetInteger("Condition", 0);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 
 public class Player : MonoBehaviour
 {
@@ -55,10 +56,13 @@ public class Player : MonoBehaviour
     [Header("Shoot")]
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject bulletReversePrefab;
+    [SerializeField] private GameObject gunObject;
     [SerializeField] private Transform shootPlace;
     [SerializeField] private float recoilForce;
     [SerializeField] private float rechargeTime;
     private float timeAfterLastShoot;
+    private float maxGunAngle = 90;
+    private SpriteRenderer gunRenderer;
 
     [Header("Sprites")]
     [SerializeField] private Sprite roboSprite;
@@ -94,6 +98,7 @@ public class Player : MonoBehaviour
         sounds = GetComponent<Sounds>();
         animator = GetComponent<Animator>();
         cam = Camera.main;
+        gunRenderer = gunObject.GetComponentInChildren<SpriteRenderer>();
     }
 
     private void FixedUpdate()
@@ -106,10 +111,8 @@ public class Player : MonoBehaviour
         
         rb.freezeRotation = isGrounded;
 
-        if (!isGrounded)
-        {
-            Flying();
-        }
+        GunRotation();
+
     }
 
     private void Update()
@@ -157,11 +160,53 @@ public class Player : MonoBehaviour
         jumpTimer += Time.deltaTime;
     }
 
-    private void Flying()
+    private void GunRotation()
     {
-        Vector3 diff = cam.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        Vector3 diff = cam.ScreenToWorldPoint(Input.mousePosition) - gunObject.transform.position;
         float rotateZ = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, rotateZ);
+        gunObject.transform.rotation = Quaternion.Euler(0, 0, rotateZ);
+        Vector3 dogDiff = diff - transform.forward;
+
+        if (gunObject.transform.localEulerAngles.z > 90 + maxGunAngle && gunObject.transform.localEulerAngles.z < 270) // мышка сильно против часовой ушла 
+        {
+            if (!isGrounded)
+            {
+                if (transform.rotation.eulerAngles.y == 0)
+                {
+                    transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 
+                        transform.rotation.eulerAngles.z + gunObject.transform.localEulerAngles.z - (90 + maxGunAngle));
+                }
+                else
+                {
+                    transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.y * 2,
+                        transform.rotation.eulerAngles.z - gunObject.transform.localEulerAngles.z);
+                }
+            }
+            gunObject.transform.localEulerAngles = new Vector3(gunObject.transform.eulerAngles.x,
+                gunObject.transform.eulerAngles.y, 
+                90 + maxGunAngle + transform.rotation.eulerAngles.y);
+        }
+        else if (gunObject.transform.localEulerAngles.z > 270) // мышка сильно по часовой ушла 
+        {
+            if (!isGrounded)
+            {
+                if (transform.rotation.eulerAngles.y == 0)
+                {
+                    transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y,
+                        transform.rotation.eulerAngles.z + gunObject.transform.localEulerAngles.z);
+                }
+                else
+                {
+                    transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.y * 2,
+                        transform.rotation.eulerAngles.z - (gunObject.transform.localEulerAngles.z - (90 + maxGunAngle)));
+                }
+            }
+            gunObject.transform.localEulerAngles = new Vector3(gunObject.transform.eulerAngles.x,
+                gunObject.transform.eulerAngles.y, 
+                90 - maxGunAngle + transform.rotation.eulerAngles.y);
+        }
+
+        gunRenderer.flipY = gunObject.transform.localEulerAngles.z > 90;
     }
 
     private void Move()
@@ -236,7 +281,7 @@ public class Player : MonoBehaviour
 
     private void Turn()
     {
-        if (moveDirection <= 0 && transform.rotation.eulerAngles.y != 180)
+        if (moveDirection < 0 && transform.rotation.eulerAngles.y != 180)
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
         }
@@ -283,15 +328,13 @@ public class Player : MonoBehaviour
     {
         if (timeAfterLastShoot >= rechargeTime && !isSquat)
         {
-            bool needBost = transform.rotation.eulerAngles.z > 240 && transform.rotation.eulerAngles.z < 300;
+            bool needBost = gunObject.transform.rotation.eulerAngles.z > 240 && gunObject.transform.rotation.eulerAngles.z < 300;
             sounds.PlaySound(3);
-            Vector3 recoilVector = new Vector3((transform.rotation.eulerAngles.y == 0 ? -1 : 1) * (float)Math.Cos(transform.rotation.eulerAngles.z * Math.PI / 180.0),
-                -(float)Math.Sin(transform.rotation.eulerAngles.z * Math.PI / 180.0), 0);
+            Vector3 recoilVector = (gunObject.transform.position - shootPlace.position).normalized;
 
-            // спавним пулю, надо пофиксить, смотрим влево - летит не туда 
-            Instantiate(transform.rotation.y == 0 ? bulletPrefab : bulletReversePrefab, 
-                shootPlace.position, transform.rotation);
-            
+            //спавним пулю 
+            Instantiate(bulletPrefab, shootPlace.position, shootPlace.transform.rotation);
+
             // добавляем отдачу с силой recoilForce
             rb.AddForce(recoilVector * recoilForce * (isGrounded ? 0.8f : 1) * (needBost ? 1.5f : 1), ForceMode2D.Impulse);
             timeAfterLastShoot = 0;
