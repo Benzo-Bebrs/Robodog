@@ -316,7 +316,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 41.760002, y: 26.018438}
+  m_Size: {x: 2.4, y: 2.4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -419,6 +419,7 @@ MonoBehaviour:
   superJumpCoefficient: 1.5
   bulletPrefab: {fileID: 5379853613737053142, guid: 40e42f23651cf774790586067ebf8b18, type: 3}
   bulletReversePrefab: {fileID: 5379853613737053142, guid: 113992c85c713d74586f15ccdb4c5e2d, type: 3}
+  gunObject: {fileID: 0}
   shootPlace: {fileID: 2056467177144342545}
   recoilForce: 10
   rechargeTime: 1

@@ -12,7 +12,7 @@ GameObject:
   m_Layer: 0
   m_Name: Bullet Spawn
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -26,6 +26,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: -0.24, y: -0.247, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8804405675182668736}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3903005002866322653
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7823226432819542109}
+  m_Layer: 0
+  m_Name: Bullet cast
+  m_TagString: Untagged
+  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7823226432819542109
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3903005002866322653}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -65,6 +96,7 @@ Transform:
   m_Children:
   - {fileID: 6245227833404785323}
   - {fileID: 7698377601584302735}
+  - {fileID: 7823226432819542109}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &24914490219573614
@@ -81,7 +113,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 5379853613737053142, guid: 71a13ae7b0d9a7c4491e5a9c1ac35152, type: 3}
   reverseBulletPrefab: {fileID: 5379853613737053142, guid: fe0e4152f29a09a42a55b3953117049e, type: 3}
+  bulletCastPrefab: {fileID: 9111694208982708383, guid: 33d38aeb8ae22d6439f138e7666f408d, type: 3}
   shootPlace: {fileID: 6245227833404785323}
+  bulletCastPlace: {fileID: 7823226432819542109}
   wayPoints:
   - {fileID: 0}
   - {fileID: 0}
@@ -89,9 +123,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   playerTrigger: {fileID: 0}
-  timeToMove: 3
+  timeToStay: 2
   timeToShoot: 1
   speed: 3
+  startState: 0
+  maxShootsCount: 1
 --- !u!61 &5559497335623189248
 BoxCollider2D:
   m_ObjectHideFlags: 0

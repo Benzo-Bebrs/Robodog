@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class Spider : MonoBehaviour
 {
-    [SerializeField] GameObject bulletPrefab, reverseBulletPrefab;
-    [SerializeField] Transform shootPlace;
+    [SerializeField] GameObject bulletPrefab, reverseBulletPrefab, bulletCastPrefab;
+    [SerializeField] Transform shootPlace, bulletCastPlace;
     [SerializeField] private Transform[] wayPoints;
     [SerializeField] private Trigger playerTrigger;
     [SerializeField] private float timeToStay = 2, timeToShoot = 1;
@@ -15,7 +15,7 @@ public class Spider : MonoBehaviour
     [SerializeField] private int startState, maxShootsCount = 1;
 
     private SpriteRenderer sprite;
-    private int state, newState, deltState, shootsCount;
+    private int state, newState, deltState, shootsCount, bulletCastsCount;
     private System.Random rnd;
     private float stayTimer, shootTimer;
     private Player player;
@@ -46,11 +46,22 @@ public class Spider : MonoBehaviour
             animator.SetInteger("Condition", 0);
         }
 
+        if (bulletCastsCount <= shootsCount && shootsCount < maxShootsCount && shootTimer >= (timeToShoot - 0.2f))
+        {
+            CastBullet();
+        }
+
         if (!playerTrigger.isTriggered)
         {
             stayTimer = 0;
             shootTimer = 0;
         }
+    }
+
+    private void CastBullet()
+    {
+        bulletCastsCount++;
+        Instantiate(bulletCastPrefab, bulletCastPlace.position, Quaternion.identity);
     }
 
     private void Stay()
@@ -68,6 +79,7 @@ public class Spider : MonoBehaviour
         {
             animator.SetInteger("Condition", 0);
         }
+
         if (stayTimer >= timeToStay)
         {
             stayTimer = 0;
@@ -146,5 +158,6 @@ public class Spider : MonoBehaviour
             shootTimer = 0;
         }
         shootsCount = 0;
+        bulletCastsCount = 0;
     }
 }
