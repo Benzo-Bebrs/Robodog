@@ -63,6 +63,7 @@ public class Player : MonoBehaviour
     private float timeAfterLastShoot;
     private float maxGunAngle = 90;
     private SpriteRenderer gunRenderer;
+    [SerializeField] private Transform gunUpPosition, gunDownPosition;
 
     [Header("Sprites")]
     [SerializeField] private Sprite roboSprite;
@@ -277,6 +278,8 @@ public class Player : MonoBehaviour
             isSquatSoundPlayed = false;
             isUpSoundPlayed = false;
         }
+
+        gunObject.transform.position = Vector3.MoveTowards(gunObject.transform.position, isSquat ? gunDownPosition.position : gunUpPosition.position, 1.2f * Time.deltaTime);
     }
 
     private void Turn()

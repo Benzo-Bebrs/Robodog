@@ -21,7 +21,7 @@ public class EnemyBullet : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            //Player.Instance.HealthPoint -= 1;
+            Player.Instance.HealthPoint -= 1;
             Explode();
         }
         else if (!collision.isTrigger && !collision.CompareTag("Enemy"))

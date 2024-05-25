@@ -8085,6 +8085,37 @@ Transform:
   - {fileID: 1660884145}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1021026780
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1021026781}
+  m_Layer: 0
+  m_Name: Down Gun Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1021026781
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021026780}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.152, y: 0.552, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1332566725}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1029982839
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12756,6 +12787,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7564197632806750741, guid: 5b9f0ea4c089ce847a2a2dee12211688, type: 3}
+      propertyPath: gunUpPosition
+      value: 
+      objectReference: {fileID: 1904821464}
+    - target: {fileID: 7564197632806750741, guid: 5b9f0ea4c089ce847a2a2dee12211688, type: 3}
+      propertyPath: gunDownPosition
+      value: 
+      objectReference: {fileID: 1021026781}
+    - target: {fileID: 7564197632806750741, guid: 5b9f0ea4c089ce847a2a2dee12211688, type: 3}
       propertyPath: checkPointTrigger
       value: 
       objectReference: {fileID: 1622669460}
@@ -12773,7 +12812,13 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 60b2b22f49f286c48a909590b9d8700d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6602609071380170116, guid: 5b9f0ea4c089ce847a2a2dee12211688, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1021026781}
+    - targetCorrespondingSourceObject: {fileID: 6602609071380170116, guid: 5b9f0ea4c089ce847a2a2dee12211688, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1904821464}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5818340228822254469, guid: 5b9f0ea4c089ce847a2a2dee12211688, type: 3}
       insertIndex: -1
@@ -14975,6 +15020,37 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 7.71, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &1904821463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1904821464}
+  m_Layer: 0
+  m_Name: Up Gun Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1904821464
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1904821463}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.152, y: 0.869, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1332566725}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1911597357
 GameObject:
   m_ObjectHideFlags: 0
